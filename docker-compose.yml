@@ -1,0 +1,36 @@
+#Docker-compose project by Lilian Cizeron and Simon Provot
+#1st Year of Cybersécurité du Logiciel at ENSIBS
+
+version: "3"
+
+services:
+  
+  #Server part
+  server:
+    build:
+      context: .
+      dockerfile: ./serveur/Dockerfile
+    ports:
+      - "10000:10000"
+    networks:
+      default:
+        ipv4_address: 192.168.2.1
+    tty: true
+  
+  #Client part
+  client:
+    build:
+      context: .
+      dockerfile: ./client/Dockerfile
+    networks:
+      default:
+        ipv4_address: 192.168.2.2
+    
+#Network to use for connection
+networks:
+  default:
+    ipam:
+      driver : default
+      config:
+        -  subnet: 192.168.2.0/24
+           gateway: 192.168.2.254
